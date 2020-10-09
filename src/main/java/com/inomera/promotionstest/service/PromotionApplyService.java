@@ -9,21 +9,29 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 @Service
 @Slf4j
 public class PromotionApplyService {
 
-    public Promotion applyPromotion(Promotion promotion) {
+    public Promotion applyPromotion(Promotion promotion) throws MalformedURLException {
         log.error("Promotion : " + promotion.getProductId() + " - " + promotion.getPayQty()+ " - " + promotion.getPromotionName());
-        System.setProperty("webdriver.chrome.driver", "drivers/chromedriver");
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        WebDriver driver = new ChromeDriver(options);
+        //System.setProperty("webdriver.chrome.driver", "drivers/chromedriver");
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--headless");
+        chromeOptions.setCapability("browserVersion", "67");
+        chromeOptions.setCapability("platformName", "Linux");
+        WebDriver driver = new RemoteWebDriver(new URL("https://promotionstest.herokuapp.com/"), chromeOptions);
+        driver.get("http://www.google.com");
+
 
         openProductPage(driver, promotion);
         incrementToCart(driver, promotion);

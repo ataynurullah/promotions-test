@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class PromotionService {
     private SlackMessageService slackMessageService;
 
     @Scheduled(fixedDelay = 5 * ONE_MINUTE)
-    public void applyPromotions(){
+    public void applyPromotions() throws MalformedURLException {
         InitialData initialData = new InitialData();
         List<Promotion> resultList = new ArrayList<>();
         for (Promotion promotion : initialData.getPromotions()){
