@@ -170,7 +170,7 @@ public class PromotionApplyService {
 
         }
 
-        return true;
+        return false;
     }
 
     private void waitForPageLoaded(WebDriver driver) {
