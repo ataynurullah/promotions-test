@@ -2,6 +2,8 @@ package com.inomera.promotionstest.service;
 
 import com.inomera.promotionstest.model.Promotion;
 import com.inomera.promotionstest.model.PromotionType;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import io.github.bonigarcia.wdm.managers.ChromeDriverManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.tomcat.jni.OS;
@@ -41,6 +43,9 @@ public class PromotionApplyService {
     }
 
     public WebDriver launchBrowser(){
+
+        WebDriverManager webDriverManager = new ChromeDriverManager();
+        webDriverManager.setup();
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
