@@ -18,8 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.net.MalformedURLException;
 
-import static sun.jvm.hotspot.utilities.PlatformInfo.getOS;
-
 @Service
 @Slf4j
 public class PromotionApplyService {
@@ -47,7 +45,6 @@ public class PromotionApplyService {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         options.addArguments("window-size=1200x600");
-        if(getOS().equals(OS.IS_LINUX)){
             try{   //GOOGLE_CHROME_SHIM GOOGLE_CHROME_BIN
                 String binaryPath= EnvironmentUtils.getProcEnvironment().get("GOOGLE_CHROME_SHIM");
                 System.out.println("Path: "+binaryPath);
@@ -57,7 +54,6 @@ public class PromotionApplyService {
             }catch(Exception e){
 
             }
-        }
 
         WebDriver driver=new ChromeDriver(options);
 
