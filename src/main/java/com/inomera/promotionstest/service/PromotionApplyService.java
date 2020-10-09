@@ -3,6 +3,8 @@ package com.inomera.promotionstest.service;
 import com.inomera.promotionstest.model.Promotion;
 import com.inomera.promotionstest.model.PromotionType;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.exec.environment.EnvironmentUtils;
+import org.apache.tomcat.jni.OS;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -16,16 +18,16 @@ import org.springframework.stereotype.Service;
 
 import java.net.MalformedURLException;
 
+import static sun.jvm.hotspot.utilities.PlatformInfo.getOS;
+
 @Service
 @Slf4j
 public class PromotionApplyService {
 
     public Promotion applyPromotion(Promotion promotion) throws MalformedURLException {
         log.error("Promotion : " + promotion.getProductId() + " - " + promotion.getPayQty()+ " - " + promotion.getPromotionName());
-        System.setProperty("webdriver.chrome.driver", "heroku/google-chrome");
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--headless");
-        WebDriver driver = new ChromeDriver(chromeOptions);
+
+        WebDriver driver = launchBrowser();
 
         openProductPage(driver, promotion);
         incrementToCart(driver, promotion);
@@ -38,6 +40,28 @@ public class PromotionApplyService {
         promotion.setResult(isPromotionActive(driver, promotion));
         driver.close();
         return promotion;
+    }
+
+    public WebDriver launchBrowser(){
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("window-size=1200x600");
+        if(getOS().equals(OS.IS_LINUX)){
+            try{   //GOOGLE_CHROME_SHIM GOOGLE_CHROME_BIN
+                String binaryPath= EnvironmentUtils.getProcEnvironment().get("GOOGLE_CHROME_SHIM");
+                System.out.println("Path: "+binaryPath);
+                options.setBinary(binaryPath);
+                options.addArguments("--disable-gpu");
+                options.addArguments("--no-sandbox");
+            }catch(Exception e){
+
+            }
+        }
+
+        WebDriver driver=new ChromeDriver(options);
+
+        return driver;
     }
 
     private void setCoupon(WebDriver driver, Promotion promotion) {
