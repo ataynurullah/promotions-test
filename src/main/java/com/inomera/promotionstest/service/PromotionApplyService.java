@@ -52,10 +52,11 @@ public class PromotionApplyService {
                 options.addArguments("--disable-gpu");
                 options.addArguments("--no-sandbox");
             }catch(Exception e){
-
+                log.error("catch");
             }
 
         WebDriver driver=new ChromeDriver(options);
+        driver.get("http://google.com");
 
         return driver;
     }
