@@ -47,6 +47,7 @@ public class PromotionApplyService {
         WebDriverManager webDriverManager = new ChromeDriverManager();
         webDriverManager.setup();
 
+        System.setProperty("webdriver.chrome.driver","/app/.cache/selenium/chromedriver/linux64/86.0.4240.22/chromedriver");
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         options.addArguments("window-size=1200x600");
