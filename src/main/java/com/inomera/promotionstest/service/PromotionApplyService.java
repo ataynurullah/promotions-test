@@ -2,22 +2,28 @@ package com.inomera.promotionstest.service;
 
 import com.inomera.promotionstest.model.Promotion;
 import com.inomera.promotionstest.model.PromotionType;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class PromotionApplyService {
 
     public Promotion applyPromotion(Promotion promotion) {
+        log.error("Promotion : " + promotion.getProductId() + " - " + promotion.getPayQty()+ " - " + promotion.getPromotionName());
         System.setProperty("webdriver.chrome.driver", "drivers/chromedriver");
-        WebDriver driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        WebDriver driver = new ChromeDriver(options);
 
         openProductPage(driver, promotion);
         incrementToCart(driver, promotion);
@@ -112,8 +118,8 @@ public class PromotionApplyService {
 
     private double getProductPrice(WebDriver driver) {
 
-        WebElement price = driver.findElement(By.xpath("//*[@id=\"checkout_cart\"]/div[1]/div/div[4]/table/tbody/tr/td/div/div[4]/div/span"));
-        String c = price.getText();
+        WebElement price = driver.findElement(By.xpath("//*[@id=\"checkout_cart\"]/div[1]/div/div[4]/table/tbody/tr/td/div/div[5]"));
+        String c = price.getText().replace("x", "");
 
         if (c.contains("TL")) {
             c = c.replace("TL", "").replace(",", ".").replace(" ", "");
@@ -121,7 +127,7 @@ public class PromotionApplyService {
             c = c.substring(1, c.length());
         }
 
-        return Double.valueOf(c.replace(" ","").replace(",","."));
+        return Double.valueOf(c.replace(" ","").replace(",",".").replace("x",""));
     }
 
     private boolean isPromotionActive(WebDriver driver, Promotion promotion) {

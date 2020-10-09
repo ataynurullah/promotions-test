@@ -43,7 +43,7 @@ public class PromotionService {
 
     private void sendMessageToInomera(String message) {
         slackMessageService.sendSlackMessage(
-                "https://hooks.slack.com/services/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",
+                "https://hooks.slack.com/services/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",
                 "#wrongdeliverycost",
                 "Promotion Test",
                 message);
