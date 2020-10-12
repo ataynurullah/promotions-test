@@ -41,28 +41,32 @@ public class PromotionApplyService {
         return promotion;
     }
 
-    public WebDriver launchBrowser(){
 
-        WebDriverManager webDriverManager = new ChromeDriverManager();
-        webDriverManager.setup();
+    public WebDriver launchBrowser(){
+        String driverPath="";
+            driverPath="drivers/chromedriver";
+            System.setProperty("webdriver.chrome.driver", driverPath);
+
+
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         options.addArguments("window-size=1200x600");
             try{   //GOOGLE_CHROME_SHIM GOOGLE_CHROME_BIN
-                String binaryPath= EnvironmentUtils.getProcEnvironment().get("GOOGLE_CHROME_SHIM");
+                String binaryPath=EnvironmentUtils.getProcEnvironment().get("GOOGLE_CHROME_SHIM");
                 System.out.println("Path: "+binaryPath);
                 options.setBinary(binaryPath);
                 options.addArguments("--disable-gpu");
                 options.addArguments("--no-sandbox");
             }catch(Exception e){
-                log.error("catch");
+
             }
 
+
         WebDriver driver=new ChromeDriver(options);
-        driver.get("http://google.com");
 
         return driver;
     }
+
 
     private void setCoupon(WebDriver driver, Promotion promotion) {
         WebDriverWait wait = new WebDriverWait(driver, 10);
@@ -153,7 +157,7 @@ public class PromotionApplyService {
             c = c.substring(1, c.length());
         }
 
-        return Double.valueOf(c.replace(" ","").replace(",",".").replace("x",""));
+        return Double.parseDouble(c.replace(" ","").replace(",",".").replace("x",""));
     }
 
     private boolean isPromotionActive(WebDriver driver, Promotion promotion) {
