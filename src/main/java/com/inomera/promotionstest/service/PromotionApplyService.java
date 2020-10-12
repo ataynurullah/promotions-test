@@ -6,7 +6,6 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.managers.ChromeDriverManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.environment.EnvironmentUtils;
-import org.apache.tomcat.jni.OS;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -46,8 +45,6 @@ public class PromotionApplyService {
 
         WebDriverManager webDriverManager = new ChromeDriverManager();
         webDriverManager.setup();
-
-        System.setProperty("webdriver.chrome.driver","/app/.cache/selenium/chromedriver/linux64/86.0.4240.22/chromedriver");
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         options.addArguments("window-size=1200x600");
